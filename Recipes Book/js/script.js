@@ -5,18 +5,20 @@ let editingRecipeId = null;
 document.getElementById("add-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const title = document.getElementById("title").value.trim();
+  const imageUrl = document.getElementById("image-url").value.trim();
   const ingredients = document.getElementById("ingredients").value.trim();
   const instructions = document.getElementById("instructions").value.trim();
   const cuisine = document.getElementById("cuisine").value.trim();
 
-  if (!title || !ingredients) {
-    alert("Title and Ingredients are required!");
+  if (!title || !ingredients || !imageUrl) {
+    alert("Title, Image URL, and Ingredients are required!");
     return;
   }
 
   const recipe = {
     id: Date.now(),
     title,
+    imageUrl,
     ingredients,
     instructions,
     cuisine,
@@ -46,14 +48,15 @@ function displayRecipes(filteredRecipes = null) {
     card.className = "col-md-6";
     card.innerHTML = `
       <div class="card mb-3 shadow-sm">
+        <img src="${recipe.imageUrl}" class="card-img-top" alt="${recipe.title}">
         <div class="card-body">
           <h5 class="card-title">${recipe.title}</h5>
           <p class="card-text"><strong>Ingredients:</strong> ${recipe.ingredients}</p>
           <p class="card-text"><strong>Instructions:</strong> ${recipe.instructions}</p>
           <p class="card-text"><strong>Cuisine:</strong> ${recipe.cuisine}</p>
-          <div class="btn-group">
-            <button class="btn btn-warning btn-sm" onclick="editRecipe(${recipe.id})">Edit</button>
-            <button class="btn btn-danger btn-sm" onclick="deleteRecipe(${recipe.id})">Delete</button>
+          <div class="d-flex gap-2">
+            <button class="btn btn-edit btn-sm" onclick="editRecipe(${recipe.id})">Edit</button>
+            <button class="btn btn-delete btn-sm" onclick="deleteRecipe(${recipe.id})">Delete</button>
           </div>
         </div>
       </div>
@@ -68,12 +71,14 @@ function editRecipe(id) {
   if (recipe) {
     editingRecipeId = id;
     document.getElementById("edit-title").value = recipe.title;
+    document.getElementById("edit-image-url").value = recipe.imageUrl;
     document.getElementById("edit-ingredients").value = recipe.ingredients;
     document.getElementById("edit-instructions").value = recipe.instructions;
     document.getElementById("edit-cuisine").value = recipe.cuisine;
 
     document.getElementById("add-form").style.display = "none";
     document.getElementById("edit-form").style.display = "block";
+    document.getElementById("recipe-list").style.display = "none";
   }
 }
 
@@ -81,14 +86,15 @@ function editRecipe(id) {
 document.getElementById("edit-form").addEventListener("submit", function (e) {
   e.preventDefault();
   const title = document.getElementById("edit-title").value.trim();
+  const imageUrl = document.getElementById("edit-image-url").value.trim();
   const ingredients = document.getElementById("edit-ingredients").value.trim();
   const instructions = document
     .getElementById("edit-instructions")
     .value.trim();
   const cuisine = document.getElementById("edit-cuisine").value.trim();
 
-  if (!title || !ingredients) {
-    alert("Title and Ingredients are required!");
+  if (!title || !ingredients || !imageUrl) {
+    alert("Title, Image URL, and Ingredients are required!");
     return;
   }
 
@@ -97,6 +103,7 @@ document.getElementById("edit-form").addEventListener("submit", function (e) {
     recipes[recipeIndex] = {
       id: editingRecipeId,
       title,
+      imageUrl,
       ingredients,
       instructions,
       cuisine,
@@ -113,6 +120,7 @@ document.getElementById("cancel-edit").addEventListener("click", cancelEdit);
 function cancelEdit() {
   document.getElementById("add-form").style.display = "block";
   document.getElementById("edit-form").style.display = "none";
+  document.getElementById("recipe-list").style.display = "none";
   editingRecipeId = null;
 }
 
@@ -136,6 +144,21 @@ document.getElementById("search-input").addEventListener("input", function () {
   displayRecipes(filteredRecipes);
 });
 
+// Filter by Cuisine
+document
+  .getElementById("filter-cuisine")
+  .addEventListener("change", function () {
+    const selectedCuisine = this.value;
+    if (selectedCuisine === "") {
+      displayRecipes();
+    } else {
+      const filteredRecipes = recipes.filter(
+        (recipe) => recipe.cuisine === selectedCuisine
+      );
+      displayRecipes(filteredRecipes);
+    }
+  });
+
 // Show/Hide Recipes
 document.getElementById("show-recipes").addEventListener("click", function () {
   const recipeList = document.getElementById("recipe-list");
@@ -158,7 +181,19 @@ document.getElementById("show-recipes").addEventListener("click", function () {
   }
 });
 
+// Show/Hide Form
+document.getElementById("show-form").addEventListener("click", function () {
+  const recipeList = document.getElementById("recipe-list");
+  const addForm = document.getElementById("add-form");
+  const editForm = document.getElementById("edit-form");
+
+  recipeList.style.display = "none";
+  addForm.style.display = "block";
+  editForm.style.display = "none";
+});
+
 // Load Recipes on Page Load
 window.onload = function () {
-  displayRecipes();
+  document.getElementById("add-form").style.display = "block";
+  document.getElementById("recipe-list").style.display = "none";
 };

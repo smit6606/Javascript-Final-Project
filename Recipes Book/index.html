@@ -16,31 +16,59 @@
   </head>
   <body>
     <!-- Header -->
-    <header class="bg-light py-3 shadow-sm">
-      <div class="container d-flex justify-content-between align-items-center">
-        <div class="logo">
-          <img
-            src="image/cook-book-logo.webp"
-            width="120px"
-            alt="Recipe Logo"
-            class="img-fluid"
-          />
-        </div>
-        <div class="d-flex align-items-center gap-3">
-          <div class="input-group">
-            <span class="input-group-text bg-white border-end-0">
-              <i class="fas fa-search"></i>
-            </span>
-            <input
-              type="text"
-              id="search-input"
-              class="form-control border-start-0"
-              placeholder="Search your favourite dishes"
+    <header class="bg-light py-3 shadow-sm w-100">
+      <div class="container px-4">
+        <div class="row align-items-center">
+          <!-- Logo -->
+          <div class="col-auto">
+            <img
+              src="image/cook-book-logo.webp"
+              width="120px"
+              alt="Recipe Logo"
+              class="img-fluid"
             />
           </div>
-          <button id="show-recipes" class="btn btn-primary">
-            <i class="fas fa-book"></i> Show Recipes
-          </button>
+
+          <!-- Search & Filters -->
+          <div class="col d-flex justify-content-center">
+            <div class="input-group w-50">
+              <span class="input-group-text bg-white border-end-0">
+                <i class="fas fa-search"></i>
+              </span>
+              <input
+                type="text"
+                id="search-input"
+                class="form-control border-start-0"
+                placeholder="Search your favourite dishes"
+              />
+            </div>
+            <select id="filter-cuisine" class="form-select ms-3 w-auto">
+              <option value="">All Cuisines</option>
+              <option value="Indian cuisine">Indian cuisine</option>
+              <option value="East African cuisine">East African cuisine</option>
+              <option value="Italian cuisine">Italian cuisine</option>
+              <option value="French cuisine">French cuisine</option>
+              <option value="Chinese cuisine">Chinese cuisine</option>
+              <option value="Mexican cuisine">Mexican cuisine</option>
+              <option value="Punjabi Cuisine">Punjabi Cuisine</option>
+              <option value="SouthIndian Cuisine">SouthIndian Cuisine</option>
+            </select>
+          </div>
+
+          <div class="col-auto d-flex gap-2">
+            <button
+              id="show-form"
+              class="btn btn-success d-flex align-items-center px-3"
+            >
+              <i class="fas fa-plus me-2"></i> Add Recipe
+            </button>
+            <button
+              id="show-recipes"
+              class="btn btn-info d-flex align-items-center px-3"
+            >
+              <i class="fas fa-book me-2"></i> Show Recipes
+            </button>
+          </div>
         </div>
       </div>
     </header>
@@ -49,10 +77,14 @@
     <div class="container mt-5">
       <!-- Add Recipe Form -->
       <form id="add-form" class="mb-4 p-4 bg-light rounded shadow-sm">
-        <h3 class="mb-4">Add New Recipe</h3>
+        <h3 class="mb-4 animate-heading">Add New Recipe</h3>
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>
           <input type="text" id="title" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="image-url" class="form-label">Image URL</label>
+          <input type="text" id="image-url" class="form-control" required />
         </div>
         <div class="mb-3">
           <label for="ingredients" class="form-label">Ingredients</label>
@@ -74,7 +106,17 @@
         </div>
         <div class="mb-3">
           <label for="cuisine" class="form-label">Cuisine Type</label>
-          <input type="text" id="cuisine" class="form-control" required />
+          <select id="cuisine" class="form-select" required>
+            <option value="Select Any One!" hidden>Select Any One!</option>
+            <option value="Indian cuisine">Indian cuisine</option>
+            <option value="East African cuisine">East African cuisine</option>
+            <option value="Italian cuisine">Italian cuisine</option>
+            <option value="French cuisine">French cuisine</option>
+            <option value="Chinese cuisine">Chinese cuisine</option>
+            <option value="Mexican cuisine">Mexican cuisine</option>
+            <option value="Punjabi Cuisine">Punjabi Cuisine</option>
+            <option value="SouthIndian Cuisine">SouthIndian Cuisine</option>
+          </select>
         </div>
         <button type="submit" class="btn btn-primary">Add Recipe</button>
       </form>
@@ -85,10 +127,19 @@
         class="mb-4 p-4 bg-light rounded shadow-sm"
         style="display: none"
       >
-        <h3 class="mb-4">Edit Recipe</h3>
+        <h3 class="mb-4 animate-heading">Edit Recipe</h3>
         <div class="mb-3">
           <label for="edit-title" class="form-label">Title</label>
           <input type="text" id="edit-title" class="form-control" required />
+        </div>
+        <div class="mb-3">
+          <label for="edit-image-url" class="form-label">Image URL</label>
+          <input
+            type="text"
+            id="edit-image-url"
+            class="form-control"
+            required
+          />
         </div>
         <div class="mb-3">
           <label for="edit-ingredients" class="form-label">Ingredients</label>
@@ -110,7 +161,17 @@
         </div>
         <div class="mb-3">
           <label for="edit-cuisine" class="form-label">Cuisine Type</label>
-          <input type="text" id="edit-cuisine" class="form-control" required />
+          <select id="edit-cuisine" class="form-select" required>
+            <option value="Select Any One!" hidden>Select Any One!</option>
+            <option value="Indian cuisine">Indian cuisine</option>
+            <option value="East African cuisine">East African cuisine</option>
+            <option value="Italian cuisine">Italian cuisine</option>
+            <option value="French cuisine">French cuisine</option>
+            <option value="Chinese cuisine">Chinese cuisine</option>
+            <option value="Mexican cuisine">Mexican cuisine</option>
+            <option value="Punjabi Cuisine">Punjabi Cuisine</option>
+            <option value="SouthIndian Cuisine">SouthIndian Cuisine</option>
+          </select>
         </div>
         <button type="submit" class="btn btn-primary">Save Changes</button>
         <button type="button" id="cancel-edit" class="btn btn-secondary">
